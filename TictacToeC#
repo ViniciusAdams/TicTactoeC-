@@ -1,0 +1,78 @@
+using System;
+
+namespace TicTacToe
+{
+    class Program
+    {
+        static char[] board = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };
+        static char currentPlayer = 'X';
+
+        static void Main(string[] args)
+        {
+            bool gameWon = false;
+            int moveCount = 0;
+
+            while (!gameWon && moveCount < 9)
+            {
+                DrawBoard();
+                Console.WriteLine($"Player {currentPlayer}, enter your move (1-9):");
+                int move = int.Parse(Console.ReadLine()) - 1;
+
+                if (IsValidMove(move))
+                {
+                    board[move] = currentPlayer;
+                    moveCount++;
+
+                    if (CheckForWin())
+                    {
+                        DrawBoard();
+                        Console.WriteLine($"Player {currentPlayer} wins!");
+                        gameWon = true;
+                    }
+                    else
+                    {
+                        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid move. Try again.");
+                }
+            }
+
+            if (!gameWon)
+            {
+                DrawBoard();
+                Console.WriteLine("It's a draw!");
+            }
+        }
+
+        static void DrawBoard()
+        {
+            Console.Clear();
+            Console.WriteLine(" " + board[0] + " | " + board[1] + " | " + board[2]);
+            Console.WriteLine("---+---+---");
+            Console.WriteLine(" " + board[3] + " | " + board[4] + " | " + board[5]);
+            Console.WriteLine("---+---+---");
+            Console.WriteLine(" " + board[6] + " | " + board[7] + " | " + board[8]);
+        }
+
+        static bool IsValidMove(int move)
+        {
+            return move >= 0 && move <= 8 && board[move] == ' ';
+        }
+
+        static bool CheckForWin()
+        {
+            return
+                (board[0] == currentPlayer && board[1] == currentPlayer && board[2] == currentPlayer) ||
+                (board[3] == currentPlayer && board[4] == currentPlayer && board[5] == currentPlayer) ||
+                (board[6] == currentPlayer && board[7] == currentPlayer && board[8] == currentPlayer) ||
+                (board[0] == currentPlayer && board[3] == currentPlayer && board[6] == currentPlayer) ||
+                (board[1] == currentPlayer && board[4] == currentPlayer && board[7] == currentPlayer) ||
+                (board[2] == currentPlayer && board[5] == currentPlayer && board[8] == currentPlayer) ||
+                (board[0] == currentPlayer && board[4] == currentPlayer && board[8] == currentPlayer) ||
+                (board[2] == currentPlayer && board[4] == currentPlayer && board[6] == currentPlayer);
+        }
+    }
+}
